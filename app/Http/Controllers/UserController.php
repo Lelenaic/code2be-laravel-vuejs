@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Item;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,7 @@ class UserController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/user",
+     *      path="/users",
      *      operationId="getUsersList",
      *      tags={"Users"},
      *      summary="Get list of users",
@@ -32,7 +33,7 @@ class UserController extends Controller
 
     /**
      *  @OA\Post(
-     *      path="/user",
+     *      path="/users",
      *      operationId="createUser",
      *      tags={"Users"},
      *      summary="Create an user",
@@ -83,7 +84,7 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *      path="/user/{id}",
+     *      path="/users/{id}",
      *      operationId="showUser",
      *      tags={"Users"},
      *      summary="Show an user",
@@ -117,7 +118,7 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *      path="/user/{id}",
+     *      path="/users/{id}",
      *      operationId="updateUser",
      *      tags={"Users"},
      *      summary="Update an user",
@@ -177,7 +178,7 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *      path="/user/{id}",
+     *      path="/users/{id}",
      *      operationId="delteUser",
      *      tags={"Users"},
      *      summary="Delete an user",
@@ -208,5 +209,17 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+    }
+
+    public function listItems (User $user) {
+        return $user->items;
+    }
+
+    public function addItem(User $user, Item $item) {
+        $user->items()->attach($item);
+    }
+
+    public function removeItem(User $user, Item $item) {
+        $user->items()->detach($item);
     }
 }

@@ -13,5 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::apiResource('item', 'ItemController');
-Route::apiResource('user', 'UserController');
+Route::apiResource('items', 'ItemController');
+Route::apiResource('users', 'UserController');
