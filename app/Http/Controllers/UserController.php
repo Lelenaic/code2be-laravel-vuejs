@@ -31,6 +31,38 @@ class UserController extends Controller
     }
 
     /**
+     *  @OA\Post(
+     *      path="/user",
+     *      operationId="createUser",
+     *      tags={"Users"},
+     *      summary="Create an user",
+     *      description="Create a new user in database",
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *      @OA\Parameter(
+     *          name="name",
+     *          description="User's name",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="User's email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=422, description="Given email already exists for another user."),
+     * )
+     *
      * Store a newly created resource in storage.
      *
      * @param Request $r
@@ -50,6 +82,29 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *      path="/user/{id}",
+     *      operationId="showUser",
+     *      tags={"Users"},
+     *      summary="Show an user",
+     *      description="Show an existing user from the database",
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="User's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="The user's ID does not exists."),
+     * )
+     *
      * Display the specified resource.
      *
      * @param  \App\User  $user
@@ -61,6 +116,47 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\Put(
+     *      path="/user/{id}",
+     *      operationId="updateUser",
+     *      tags={"Users"},
+     *      summary="Update an user",
+     *      description="Update an existing user from the database",
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="User's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="name",
+     *          description="User's name",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          description="User's email",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="The user's ID does not exists."),
+     * )
+     *
      * Update the specified resource in storage.
      *
      * @param Request $r
@@ -80,6 +176,29 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\Delete(
+     *      path="/user/{id}",
+     *      operationId="delteUser",
+     *      tags={"Users"},
+     *      summary="Delete an user",
+     *      description="Delete an existing user from ther database",
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="User's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="The user's ID does not exists."),
+     * )
+     *
      * Remove the specified resource from storage.
      *
      * @param  \App\User $user
