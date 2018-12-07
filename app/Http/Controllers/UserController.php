@@ -8,6 +8,19 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
+     * @OA\Get(
+     *      path="/user",
+     *      operationId="getUsersList",
+     *      tags={"Users"},
+     *      summary="Get list of users",
+     *      description="Get list of users",
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *     )
+     *
      * Display a listing of the resource.
      *
      * @return User[]
