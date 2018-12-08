@@ -179,7 +179,7 @@ class UserController extends Controller
     /**
      * @OA\Delete(
      *      path="/users/{id}",
-     *      operationId="delteUser",
+     *      operationId="deleteUser",
      *      tags={"Users"},
      *      summary="Delete an user",
      *      description="Delete an existing user from ther database",
@@ -211,15 +211,185 @@ class UserController extends Controller
         $user->delete();
     }
 
-    public function listItems (User $user) {
+    /**
+     * @OA\Get(
+     *      path="/users/{id}/items",
+     *      operationId="getUsersItems",
+     *      tags={"User's items"},
+     *      summary="Get user's items",
+     *      description="Get list of user's items",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="User's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *     )
+     *
+     * Display a listing of the resource.
+     *
+     * @return Item[]
+     */
+    public function listItems(User $user) {
         return $user->items;
     }
 
-    public function addItem(User $user, Item $item) {
-        $user->items()->attach($item);
+    /**
+     * @OA\Post(
+     *      path="/users/{userId}/items",
+     *      operationId="addUsersItems",
+     *      tags={"User's items"},
+     *      summary="Add an item to the user",
+     *      description="Add an item to the user",
+     *      @OA\Parameter(
+     *          name="userId",
+     *          description="User's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="item",
+     *          description="Item's id",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="quantity",
+     *          description="Item's quantity",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *     )
+     *
+     * Assign new item to user
+     *
+     * @param Request $r
+     * @return void
+     */
+    public function addItem(Request $r, User $user) {
+        $r->validate([
+            'item' => 'required|exists:items,id',
+            'quantity' => 'required|integer|min:1'
+        ]);
+        $item = Item::find($r->item);
+        $user->items()->attach($item, ['quantity' => $r->quantity]);
     }
 
-    public function removeItem(User $user, Item $item) {
+    /**
+     * @OA\Delete(
+     *      path="/users/{userId}/items/{itemId}",
+     *      operationId="removeUsersItem",
+     *      tags={"User's items"},
+     *      summary="Remove an item from the user's cart",
+     *      description="Remove an item from the user's cart",
+     *      @OA\Parameter(
+     *          name="userId",
+     *          description="User's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="itemId",
+     *          description="Item's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *     )
+     *
+     * Remove item from user's cart
+     *
+     * @param User $user
+     * @param Item $item
+     * @return void
+     */
+    public function dropItem(User $user, Item $item) {
         $user->items()->detach($item);
+    }
+
+    /**
+     * @OA\Put(
+     *      path="/users/{userId}/items/{itemId}",
+     *      operationId="updateUsersItems",
+     *      tags={"User's items"},
+     *      summary="Update an user's item",
+     *      description="Update an user's item",
+     *      @OA\Parameter(
+     *          name="userId",
+     *          description="User's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="itemId",
+     *          description="Item's id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="quantity",
+     *          description="Item's quantity",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *       @OA\Response(response=400, description="Bad request"),
+     *     )
+     *
+     * Assign new item to user
+     *
+     * @param Request $r
+     * @return void
+     */
+    public function updateItem(Request $r, User $user, Item $item) {
+        $r->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+        $user->items()->detach($item);
+        $user->items()->attach($item, ['quantity' => $r->quantity]);
     }
 }
