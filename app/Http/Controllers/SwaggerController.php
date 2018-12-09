@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
  *     )
  * )
  * @OA\Server(
- *      url="https://laravel-vuejs.code2be.lenaic.io/api",
+ *      url="https://laravel-vuejs.code2be.lenaic.io/api/v1",
  *      description="Serveur API Code2Be Laravel"
  * )
  */

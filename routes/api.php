@@ -13,9 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::apiResource('items', 'ItemController');
-Route::apiResource('users', 'UserController');
-Route::get('users/{user}/items', 'UserController@listItems');
-Route::post('users/{user}/items', 'UserController@addItem');
-Route::put('users/{user}/items/{item}', 'UserController@updateItem');
-Route::delete('users/{user}/items/{item}', 'UserController@dropItem');
+Route::prefix('v1')->group(function (){
+    Route::apiResource('items', 'ItemController');
+    Route::apiResource('users', 'UserController');
+    Route::get('users/{user}/items', 'UserController@listItems');
+    Route::post('users/{user}/items', 'UserController@addItem');
+    Route::put('users/{user}/items/{item}', 'UserController@updateItem');
+    Route::delete('users/{user}/items/{item}', 'UserController@dropItem');
+});
